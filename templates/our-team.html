@@ -1,0 +1,139 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+	{% include 'head.html' %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+	<body>
+		<div class="page-wrapper">
+
+			{% include 'navbar.html' %}
+
+			<!-- Title Bar -->
+			<!-- Title Bar -->
+		<div class="pbmit-title-bar-wrapper">
+			<div class="container">
+				<div class="pbmit-title-bar-content">
+					<div class="pbmit-title-bar-content-inner">
+						<div class="pbmit-tbar">
+							<div class="pbmit-tbar-inner container">
+								<h1 class="pbmit-tbar-title"> Board of Directors </h1>
+							</div>
+						</div>
+						<div class="pbmit-breadcrumb">
+							<div class="pbmit-breadcrumb-inner">
+								<span><a title="" href="#" class="home"><span>Meledath Family</span></a></span>
+								<span class="sep">
+									<i class="pbmit-base-icon-angle-right"></i>
+								</span>
+								<span><span class="post-root post post-post current-item"> Board of Directors </span></span>
+							</div>
+						</div>
+					</div>
+				</div> 
+			</div> 
+		</div>
+		<!-- Title Bar End-->
+
+			<!-- Team Members -->
+		<section class="team-section py-5">
+			<div class="container">
+				<div class="row g-4">
+				{% for member in members %}
+				<div class="col-md-6 col-lg-4 col-xl-3">
+					<div class="team-card position-relative overflow-hidden rounded-4 shadow-sm">
+					<div class="team-img-wrapper">
+						<img src="{{ member.image.url }}" class="img-fluid w-100 team-img" alt="{{ member.name }}">
+						<a href="{% url 'team_detail' member.slug %}" class="stretched-link"></a>
+						<div class="team-social-icons d-flex justify-content-center align-items-center">
+						{% if member.facebook %}
+						<a href="{{ member.facebook }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+						{% endif %}
+						{% if member.twitter %}
+						<a href="{{ member.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a>
+						{% endif %}
+						{% if member.linkedin %}
+						<a href="{{ member.linkedin }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+						{% endif %}
+						{% if member.instagram %}
+						<a href="{{ member.instagram }}" target="_blank"><i class="fab fa-instagram"></i></a>
+						{% endif %}
+						</div>
+					</div>
+					<div class="p-3 text-center">
+						<h5 class="fw-bold mb-1">{{ member.name }}</h5>
+						<p class="text-muted small mb-0">{{ member.position }}</p>
+					</div>
+					</div>
+				</div>
+				{% empty %}
+				<p>No team members found.</p>
+				{% endfor %}
+				</div>
+			</div>
+			</section>
+
+				<style>
+					.team-card {
+			background-color: #fff;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+			border: none;
+			border-radius: 20px;
+			}
+
+			.team-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+			}
+
+			.team-img-wrapper {
+			position: relative;
+			overflow: hidden;
+			border-top-left-radius: 20px;
+			border-top-right-radius: 20px;
+			}
+
+			.team-img {
+			transition: transform 0.4s ease;
+			border-radius: 20px 20px 0 0;
+			}
+
+			.team-card:hover .team-img {
+			transform: scale(1.1);
+			}
+
+			.team-social-icons {
+			position: absolute;
+			bottom: -100%;
+			left: 0;
+			right: 0;
+			background: linear-gradient(0deg, rgba(0,0,0,0.8), transparent);
+			padding: 15px 0;
+			transition: bottom 0.3s ease;
+			gap: 15px;
+			}
+
+			.team-card:hover .team-social-icons {
+			bottom: 0;
+			}
+
+			.team-social-icons a {
+			color: #fff;
+			font-size: 18px;
+			margin: 0 8px;
+			transition: color 0.3s ease;
+			}
+
+			.team-social-icons a:hover {
+			color: #ffc107;
+			}
+
+		</style>
+</section>
+
+			{% include 'footer.html' %}
+		</div>
+	</body>
+</html>

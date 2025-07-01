@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aipu_family Tree</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Oxygen');
+        * {
+            margin: 0; 
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body { 
+            background: linear-gradient(hsl(221, 56.90%, 48.20%), hsl(206, 84.60%, 45.90%));
+            min-height: 100vh;
+            font-family: Oxygen, sans-serif;
+        }
+        #container {
+            margin: 0 auto;
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px 0;
+            transform-origin: top center;
+            transition: transform 0.3s ease;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px 20px 0px 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            flex-grow: 1;
+        }
+        .tree {
+            width: 100%;
+        }
+        .tree, .tree ul {
+            width: max-content;
+            padding-top: 20px; 
+            position: relative;
+            transition: all 0.5s;
+        }
+        .tree li {
+            float: left; 
+            text-align: center;
+            list-style-type: none;
+            position: relative;
+            padding: 20px 5px 0 5px;
+            transition: all 0.5s;
+        }
+        .tree li::before, .tree li::after {
+            content: '';
+            position: absolute; 
+            top: 0; 
+            right: 50%;
+            border-top: 1px solid #ccc;
+            width: 50%; 
+            height: 20px;
+        }
+        .tree li::after {
+            right: auto; 
+            left: 50%;
+            border-left: 3px solid #ccc;
+        }
+        .tree li:only-child::after, 
+        .tree li:only-child::before {
+            display: none;
+        }
+        .tree li:only-child { 
+            padding-top: 0;
+        }
+        .tree li:first-child::before, 
+        .tree li:last-child::after {
+            border: 0;
+        }
+        .tree li:last-child::before {
+            border-right: 3px solid #ccc;
+            border-radius: 0 5px 0 0;
+        }
+        .tree li:first-child::after {
+            border-radius: 5px 0 0 0;
+        }
+        .tree ul::before {
+            content: '';
+            position: absolute; 
+            top: 0; 
+            left: 50%;
+            border-left: 3px solid #ccc;
+            width: 0; 
+            height: 20px;
+        }
+        .member-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .member-couple {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .member-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-decoration: none;
+            width: min-content;
+            color: #fff;
+            font-size: 1rem;
+            display: inline-block;
+            border-radius: 5px;
+            transition: all 0.5s;
+            background: hsl(22,22%,2%);
+            min-width: 150px;
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+        }
+        .member-box.male {
+            background: hsl(210, 80%, 20%);
+            margin-right: 15px;
+        }
+        .member-box.female {
+            background: hsl(330, 80%, 20%);
+            margin-left: 15px;
+        }
+        .member-photo img {
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 1rem;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ccc;
+            transition: all 0.3s;
+        }
+        .member-box:hover .member-photo img {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        .member-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .member-spouses {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        .member-category {
+            font-size: 0.7rem;
+            padding: 3px 5px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        .category-lm {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            border: 1px solid #2E7D32;
+        }
+        .category-pm {
+            background: linear-gradient(135deg, #2196F3, #1565C0);
+            color: white;
+            border: 1px solid #1565C0;
+        }
+        .category-nm {
+            background: linear-gradient(135deg, #f44336, #c62828);
+            color: white;
+            border: 1px solid #c62828;
+        }
+        .tree li a:hover, 
+        .tree li a:hover+ul li a {
+            background: hsl(140, 80%, 10%); 
+            border: 1px solid #94a0b4;
+            color: #fff;
+        }
+        .tree li a:hover+ul li::after, 
+        .tree li a:hover+ul li::before, 
+        .tree li a:hover+ul::before, 
+        .tree li a:hover+ul ul::before {
+            border-color: #94a0b4;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, hsl(140, 80%, 15%), hsl(60, 80%, 25%));
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            width: 80%;
+            max-width: 800px;
+            color: white;
+            position: relative;
+            border: 1px solid #4CAF50;
+        }
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .close-btn:hover {
+            color: #f44336;
+            transform: scale(1.2);
+        }
+        .modal-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .modal-image {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+        .modal-image img {
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 3px solid #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        .modal-details {
+            flex: 2;
+            min-width: 300px;
+        }
+        .modal-details h2 {
+            margin-top: 0;
+            color: #4CAF50;
+            border-bottom: 1px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .detail-label {
+            font-weight: bold;
+            min-width: 120px;
+            color: #4CAF50;
+        }
+        .detail-value {
+            flex: 1;
+        }
+        .spouse-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .spouse-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .spouse-item:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        .spouse-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+        .spouse-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .spouse-name {
+            font-weight: bold;
+        }
+        .family-photo-btn {
+            background: linear-gradient(145deg, #9C27B0, #7B1FA2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .family-photo-btn:hover {
+            background: linear-gradient(145deg, #7B1FA2, #9C27B0);
+            transform: translateY(-2px);
+        }
+        .family-photo-container {
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+        .family-photo {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            border: 3px solid #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        /* Zoom Controls */
+        .zoom-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 50;
+        }
+        .zoom-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .zoom-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+            background: linear-gradient(145deg, #45a049, #4CAF50);
+        }
+        .zoom-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            padding: 8px 20px;
+            background: linear-gradient(145deg, #f44336, #d32f2f);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logout-btn:hover {
+            background: linear-gradient(145deg, #d32f2f, #f44336);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+        .logout-btn:active {
+            transform: translateY(0);
+        }
+        .logout-icon {
+            font-size: 18px;
+        }
+
+        /* Reset Zoom Button */
+        .reset-zoom-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .reset-zoom-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+            background: linear-gradient(145deg, #1976D2, #2196F3);
+        }
+
+        @media all and (max-width: 875px) {
+            #container {
+                width: 95%;
+            }
+            .member-photo img {
+                width: 60px;
+                height: 60px;
+            }
+            .member-box {
+                min-width: 120px;
+            }
+            .member-box.male {
+                margin-right: 10px;
+            }
+            .member-box.female {
+                margin-left: 10px;
+            }
+        }
+        @media all and (max-width: 575px) {
+            .member-photo img {
+                display: none;
+            }
+            .member-box {
+                min-width: 100px;
+            }
+            .modal-body {
+                flex-direction: column;
+            }
+            .modal-image {
+                margin-bottom: 15px;
+            }
+            .header-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .zoom-controls {
+                bottom: 15px;
+                right: 15px;
+            }
+            .zoom-btn, .reset-zoom-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+        }
+        @media all and (max-width: 500px) { 
+            .tree li {
+                float: none; 
+                text-align: left;
+            }
+            .member-box {
+                border: initial;
+                width: initial;
+                min-width: initial;
+            }
+            .tree ul::before, .tree li::before, .tree li::after {
+                content: none;
+            }
+            .member-couple {
+                flex-direction: column;
+            }
+            .member-box.male, .member-box.female {
+                margin: 5px 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="header-container">
+        <h1>Aipu_family Tree</h1>
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt logout-icon"></i>
+            Logout
+        </button>
+    </div>
+
+    <div id="container">
+        <ul class="tree">
+            {% include 'family1memb.html' with member=member %}
+        </ul>
+    </div>
+
+    <!-- Zoom Controls -->
+    <div class="zoom-controls">
+        <button class="zoom-btn" onclick="zoomIn()">+</button>
+        <button class="reset-zoom-btn" onclick="resetZoom()">
+            <i class="fas fa-search"></i>
+        </button>
+        <button class="zoom-btn" onclick="zoomOut()">-</button>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="memberModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentZoom = 1;
+        const zoomStep = 0.1;
+        const minZoom = 0.5;
+        const maxZoom = 1.5;
+        const container = document.getElementById('container');
+        let currentMemberId = null;
+
+        function openModal(memberId, event) {
+            if (event) event.stopPropagation();
+            currentMemberId = memberId;
+            fetchMemberDetails(memberId);
+        }
+
+        function fetchMemberDetails(memberId) {
+            const popupContent = document.getElementById(`popup-${memberId}`);
+            
+            if (!popupContent) return;
+            
+            const contentClone = popupContent.cloneNode(true);
+            contentClone.style.display = 'block';
+            
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = '';
+            
+            // Add image
+            const imageDiv = document.createElement('div');
+            imageDiv.className = 'modal-image';
+            const img = contentClone.querySelector('.popup-image img').cloneNode(true);
+            img.style.display = 'block';
+            imageDiv.appendChild(img);
+            modalBody.appendChild(imageDiv);
+            
+            // Add details
+            const detailsDiv = document.createElement('div');
+            detailsDiv.className = 'modal-details';
+            
+            const name = contentClone.querySelector('.popup-details p:nth-child(1) span').textContent;
+            const details = contentClone.querySelectorAll('.popup-details p');
+            
+            const nameHeader = document.createElement('h2');
+            nameHeader.textContent = name;
+            detailsDiv.appendChild(nameHeader);
+            
+            details.forEach(detail => {
+                const label = detail.querySelector('strong')?.textContent;
+                const value = detail.querySelector('span')?.textContent;
+                
+                if (label && value) {
+                    const rowDiv = document.createElement('div');
+                    rowDiv.className = 'detail-row';
+                    
+                    const labelSpan = document.createElement('span');
+                    labelSpan.className = 'detail-label';
+                    labelSpan.textContent = label;
+                    
+                    const valueSpan = document.createElement('span');
+                    valueSpan.className = 'detail-value';
+                    
+                    if (label.includes('Spouse')) {
+                        const spouseContainer = document.createElement('div');
+                        spouseContainer.className = 'spouse-container';
+                        
+                        // Get all spouses from the data-member-id attributes
+                        const spouseElements = document.querySelectorAll(`.member-couple [data-member-id="${currentMemberId}"] + .member-box, .member-couple .member-box + [data-member-id="${currentMemberId}"]`);
+                        
+                        spouseElements.forEach(spouseElement => {
+                            const spouseId = spouseElement.getAttribute('data-member-id');
+                            const spousePopup = document.getElementById(`popup-${spouseId}`);
+                            if (spousePopup) {
+                                const spouseItem = document.createElement('div');
+                                spouseItem.className = 'spouse-item';
+                                spouseItem.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openModal(spouseId, e);
+                                };
+                                
+                                const spousePhoto = document.createElement('div');
+                                spousePhoto.className = 'spouse-photo';
+                                const spouseImg = spouseElement.querySelector('img').cloneNode(true);
+                                spouseImg.style.display = 'block';
+                                spousePhoto.appendChild(spouseImg);
+                                
+                                const spouseName = document.createElement('div');
+                                spouseName.className = 'spouse-name';
+                                spouseName.textContent = spouseElement.querySelector('.member-name').textContent;
+                                
+                                spouseItem.appendChild(spousePhoto);
+                                spouseItem.appendChild(spouseName);
+                                spouseContainer.appendChild(spouseItem);
+                            }
+                        });
+                        
+                        valueSpan.appendChild(spouseContainer);
+                    } else {
+                        valueSpan.textContent = value;
+                    }
+                    
+                    rowDiv.appendChild(labelSpan);
+                    rowDiv.appendChild(valueSpan);
+                    detailsDiv.appendChild(rowDiv);
+                }
+            });
+
+            // Add family photo button if available
+            const familyPhoto = contentClone.querySelector('.family-photo');
+            if (familyPhoto && familyPhoto.src && !familyPhoto.src.includes('placeholder')) {
+                const familyPhotoBtn = document.createElement('button');
+                familyPhotoBtn.className = 'family-photo-btn';
+                familyPhotoBtn.innerHTML = '<i class="fas fa-users"></i> View Family Photo';
+                familyPhotoBtn.onclick = function() {
+                    const familyPhotoContainer = document.createElement('div');
+                    familyPhotoContainer.className = 'family-photo-container';
+                    
+                    const familyPhotoImg = document.createElement('img');
+                    familyPhotoImg.className = 'family-photo';
+                    familyPhotoImg.src = familyPhoto.src;
+                    familyPhotoImg.alt = 'Family Photo';
+                    
+                    familyPhotoContainer.appendChild(familyPhotoImg);
+                    detailsDiv.appendChild(familyPhotoContainer);
+                    
+                    familyPhotoBtn.style.display = 'none';
+                };
+                detailsDiv.appendChild(familyPhotoBtn);
+            }
+            
+            modalBody.appendChild(detailsDiv);
+            document.getElementById('memberModal').style.display = 'block';
+        }
+
+        // Close modal when clicking on X
+        document.querySelector('.close-btn').onclick = function() {
+            document.getElementById('memberModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('memberModal')) {
+                document.getElementById('memberModal').style.display = 'none';
+            }
+        }
+
+        function zoomIn() {
+            if (currentZoom < maxZoom) {
+                currentZoom += zoomStep;
+                container.style.transform = `scale(${currentZoom})`;
+            }
+        }
+
+        function zoomOut() {
+            if (currentZoom > minZoom) {
+                currentZoom -= zoomStep;
+                container.style.transform = `scale(${currentZoom})`;
+            }
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            container.style.transform = `scale(${currentZoom})`;
+        }
+
+        function logout() {
+            alert('Logging out...');
+            // window.location.href = '/logout';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === '+') {
+                e.preventDefault();
+                zoomIn();
+            } else if (e.ctrlKey && e.key === '-') {
+                e.preventDefault();
+                zoomOut();
+            } else if (e.ctrlKey && e.key === '0') {
+                e.preventDefault();
+                resetZoom();
+            }
+        });
+    </script>
+</body>
+</html>

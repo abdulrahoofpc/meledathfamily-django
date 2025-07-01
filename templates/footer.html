@@ -1,0 +1,207 @@
+{% load static%}
+
+<!-- footer -->
+<footer class="site-footer pbmit-bg-color-blackish">
+    <div class="pbmit-footer-widget-wrapper container">
+        <div class="row g-0">
+            <div class="pbmit-footer-widget-logo-area col-md-12 col-xl-3">
+                <div class="pbmit-footer-logo">
+                    <img src="{%  static 'images/logo/logo.png' %}" alt="">
+                </div>
+            </div>
+            <div class="pbmit-footer-widget-text-area col-md-12 col-xl-9">
+                <div class="footer-wrap pbmit-footer-widget-area">
+                    <div class="container">
+                        <div class="row justify-content-between">
+                            <div class="pbmit-footer-widget-col-1">
+                                <aside class="widget">
+                                    <h2 class="widget-title">Call Center</h2>
+                                    <div class="pbmit-contact-widget-lines">
+                                        <div class="pbmit-contact-widget-line pbmit-base-icon-phone">800 100 975 20 34<br> + (123) 1800-234-5678</div>
+                                    </div>
+                                </aside>
+                                <aside class="pbmit-email-custom widget widget_text">
+                                    <h2 class="widget-title">Email</h2>
+                                    <div class="textwidget">
+                                        <p>meledathfamily@gmail.com</p>
+                                    </div>	
+                                </aside>
+                            </div>
+                            <div class="pbmit-footer-widget-col-2">
+                                <aside class="pbmit-location-social widget widget_text">
+                                    <h2 class="widget-title">Address</h2>
+                                    <div class="textwidget"><p>975 Liberty Ave, Union, NJ 07083, USA</p>
+                                        <h2 class="widget-title">Social Network</h2>
+                                        <ul class="pbmit-social-links">
+                                            <li class="pbmit-social-li pbmit-social-facebook">
+                                                <a title="Facebook" href="#" target="_blank">
+                                                    <span><i class="pbmit-base-icon-facebook-f"></i></span>
+                                                </a>
+                                            </li>
+                                            <li class="pbmit-social-li pbmit-social-twitter">
+                                                <a title="Twitter" href="#" target="_blank">
+                                                    <span><i class="pbmit-base-icon-twitter-2"></i></span>
+                                                </a>
+                                            </li>
+                                            <li class="pbmit-social-li pbmit-social-linkedin">
+                                                <a title="LinkedIn" href="#" target="_blank">
+                                                    <span><i class="pbmit-base-icon-linkedin-in"></i></span>
+                                                </a>
+                                            </li>
+                                            <li class="pbmit-social-li pbmit-social-instagram">
+                                                <a title="Instagram" href="#" target="_blank">
+                                                    <span><i class="pbmit-base-icon-instagram"></i></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+                            <div class="pbmit-footer-widget-col-3">
+                                <aside class="widget">
+                                    <h2 class="widget-title">Menu Link</h2>
+                                    <div class="menu-useful-link-container">
+                                        <ul>
+                                                <li><a href="{% url 'home' %}">Home</a></li>
+                                                <li><a href="{% url 'history' %}">Family History</a></li>
+                                                <li><a href="{% url 'events' %}">Our Events</a></li>
+                                                <li><a href="{% url 'team' %}">Board of Directors</a></li>
+                                                <li><a href="{% url 'gallery' %}">Gallery</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+                            <div class="pbmit-footer-widget-col-4">
+                                <aside class="widget">
+                                    <h2 class="widget-title">Family Tree</h2>
+                                    <ul>
+                                        <li><a href="{% url 'register' %}">Sign In</a></li>
+                                        <li><a href="{% url 'register' %}">Sign Up</a></li>
+                                    </ul>
+                                </aside>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pbmit-footer-text-area">
+                    <div class="container">
+                        <div class="pbmit-footer-text-inner">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="pbmit-footer-menu-area">
+                                        <div class="menu-footer-menu-container">
+                                            <ul class="pbmit-footer-menu">
+                                                <li><a href="#">Terms & Condition</a></li>
+                                                <li><a href="#">Privacy Policy</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="pbmit-footer-copyright-text-area"> Copyright © 2025 
+                                        <a href="#">Meledath Family</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- footer End -->
+
+</div>
+<!-- page wrapper End -->
+
+<!-- Search Box Start Here -->
+<div class="pbmit-search-overlay">
+<div class="pbmit-icon-close">
+    <svg class="qodef-svg--close qodef-m" xmlns="http://www.w3.org/2000/svg" width="28.163" height="28.163" viewBox="0 0 26.163 26.163">
+        <rect width="36" height="1" transform="translate(0.707) rotate(45)"></rect>
+        <rect width="36" height="1" transform="translate(0 25.456) rotate(-45)"></rect>
+    </svg>
+</div>
+<div class="pbmit-search-outer"> 
+    <form class="pbmit-site-searchform">
+        <input type="search" class="form-control field searchform-s" name="s" placeholder="Search …">
+        <button type="submit"></button>
+    </form>
+</div>
+</div>
+<!-- Search Box End Here -->
+
+<!-- Scroll To Top -->
+<!-- <div class="pbmit-progress-wrap">
+<svg class="pbmit-progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+    <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"></path>
+</svg>	
+</div> -->
+<!-- Scroll To Top End -->
+
+<!-- JS
+============================================ -->
+<!-- jQuery JS -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<!-- Popper JS -->
+<script src="{% static 'js/popper.min.js' %}"></script>
+<!-- Bootstrap JS -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<!-- jQuery Waypoints JS -->
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<!-- jQuery Appear JS -->
+<script src="{% static 'js/jquery.appear.js' %}"></script>
+<!-- Numinate JS -->
+<script src="{% static 'js/numinate.min.js' %}"></script>
+<!-- Slick JS -->
+<script src="{% static 'js/swiper.min.js' %}"></script>
+<!-- Magnific JS -->
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<!-- Circle Progress JS -->
+<script src="{% static 'js/circle-progress.js' %}"></script>
+<!-- Countdown JS -->
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<!-- AOS -->
+<script src="{% static 'js/aos.js' %}"></script>
+<!-- GSAP -->
+<script src="{% static 'js/gsap.js' %}"></script>
+<!-- Scroll Trigger -->
+<script src="{% static 'js/ScrollTrigger.js' %}"></script>
+<!-- Split Text -->
+<script src="{% static 'js/SplitText.js' %}"></script>
+<!-- Magnetic -->
+<script src="{% static 'js/magnetic.js' %}"></script>
+<!-- GSAP Animation -->
+<script src="{% static 'js/gsap-animation.js' %}"></script>
+<!-- Scripts JS -->
+<script src="{% static 'js/scripts.js' %}"></script>
+
+<!-- Favicon -->
+<link rel="shortcut icon" type="image/x-icon" href="{%  static 'images/favicon.png' %}">
+<!-- CSS
+    ============================================ -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
+    <!-- Flaticon -->
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <!-- Base Icons -->
+    <link rel="stylesheet" href="{% static 'css/pbminfotech-base-icons.css' %}">
+    <!-- Themify Icons -->
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+    <!-- Slick -->
+    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+    <!-- Magnific -->
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <!-- AOS -->
+    <link rel="stylesheet" href="{% static 'css/aos.css' %}">
+    <!-- Shortcode CSS -->
+    <link rel="stylesheet" href="{% static 'css/shortcode.css' %}">
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
