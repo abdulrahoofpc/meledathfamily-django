@@ -423,10 +423,10 @@ body {
 	.pbmit-slider-two{
         max-width: 100%;
         overflow: hidden;
-        border-radius: 20px;
+        /* border-radius: 20px; */
 	}
 	.pbmit-slider-one{
-		margin: 20px 20px 0;
+		/* margin: 20px 20px 0; */
 	}
 	.pbmit-slider-two {
 		margin: 0;
@@ -1253,7 +1253,7 @@ body {
 		width: 566px;
 		height: 245px;
 		left: 118px;
-		background: url(../images/banner-slider/slider1-shape.png) 50% 50% / cover no-repeat transparent;
+		
 	}
 	.pbmit-slider-one .pbmit-sub-title{
 		display: inline-block;

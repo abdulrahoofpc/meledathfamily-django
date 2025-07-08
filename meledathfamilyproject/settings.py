@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-c8p9(+%m2ci+m87&5p-zj_^c&-5+@bg9%ydn5$j8&$(8qik1_4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['meledathfamily.onrender.com']
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['meledathfamily.onrender.com']
 
 # Ensure login required decorators redirect to login page
 LOGIN_URL = '/admin/login/'
