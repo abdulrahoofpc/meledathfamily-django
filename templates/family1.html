@@ -13,6 +13,7 @@
             background: linear-gradient(hsl(221, 56.90%, 48.20%), hsl(206, 84.60%, 45.90%));
             min-height: 100vh;
             font-family: Oxygen, sans-serif;
+            overflow-x: auto;
         }
         #container {
             margin: 0 auto;
@@ -38,12 +39,15 @@
         }
         .tree {
             width: 100%;
+            overflow: auto;
+            padding-bottom: 20px;
         }
         .tree, .tree ul {
             width: max-content;
             padding-top: 20px; 
             position: relative;
             transition: all 0.5s;
+            min-width: 100%;
         }
         .tree li {
             float: left; 
@@ -128,6 +132,23 @@
         .member-box.female {
             background: hsl(330, 80%, 20%);
             margin-left: 15px;
+        }
+        .main-member-icon {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: gold;
+            color: #000;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            z-index: 2;
         }
         .member-photo img {
             display: block;
@@ -432,6 +453,11 @@
             .member-box.female {
                 margin-left: 10px;
             }
+            .main-member-icon {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
+            }
         }
         @media all and (max-width: 575px) {
             .member-photo img {
@@ -493,9 +519,11 @@
     </div>
 
     <div id="container">
-        <ul class="tree">
-            {% include 'family1memb.html' with member=member %}
-        </ul>
+        <div class="tree" id="treeContainer">
+            <ul>
+                {% include 'family1memb.html' with member=member is_main_member=True %}
+            </ul>
+        </div>
     </div>
 
     <!-- Zoom Controls -->
@@ -521,9 +549,31 @@
         let currentZoom = 1;
         const zoomStep = 0.1;
         const minZoom = 0.5;
-        const maxZoom = 1.5;
+        const maxZoom = 2.0;
         const container = document.getElementById('container');
+        const treeContainer = document.getElementById('treeContainer');
         let currentMemberId = null;
+
+        // Initialize the tree to fit the screen
+        function initializeTree() {
+            const treeWidth = treeContainer.scrollWidth;
+            const containerWidth = container.clientWidth;
+            
+            if (treeWidth > containerWidth) {
+                currentZoom = containerWidth / treeWidth * 0.9;
+                container.style.transform = `scale(${currentZoom})`;
+            }
+        }
+
+        // Call initializeTree after the page loads
+        window.addEventListener('load', function() {
+            initializeTree();
+            
+            // Also initialize when window is resized
+            window.addEventListener('resize', function() {
+                initializeTree();
+            });
+        });
 
         function openModal(memberId, event) {
             if (event) event.stopPropagation();
@@ -559,6 +609,20 @@
             
             const nameHeader = document.createElement('h2');
             nameHeader.textContent = name;
+            
+            // Add main member indicator if this is the main member
+            if (popupContent.classList.contains('main-member-popup')) {
+                const mainMemberBadge = document.createElement('span');
+                mainMemberBadge.style.marginLeft = '10px';
+                mainMemberBadge.style.fontSize = '0.6em';
+                mainMemberBadge.style.background = 'gold';
+                mainMemberBadge.style.color = 'black';
+                mainMemberBadge.style.padding = '3px 8px';
+                mainMemberBadge.style.borderRadius = '10px';
+                mainMemberBadge.textContent = 'Main Member';
+                nameHeader.appendChild(mainMemberBadge);
+            }
+            
             detailsDiv.appendChild(nameHeader);
             
             details.forEach(detail => {
@@ -596,7 +660,11 @@
                                 
                                 const spousePhoto = document.createElement('div');
                                 spousePhoto.className = 'spouse-photo';
-                                const spouseImg = spouseElement.querySelector('img').cloneNode(true);
+                                const spouseImg = spouseElement.querySelector('img')?.cloneNode(true) || 
+                                    document.createElement('img');
+                                if (!spouseElement.querySelector('img')) {
+                                    spouseImg.src = 'https://via.placeholder.com/40?text=No+Photo';
+                                }
                                 spouseImg.style.display = 'block';
                                 spousePhoto.appendChild(spouseImg);
                                 
@@ -675,8 +743,7 @@
         }
 
         function resetZoom() {
-            currentZoom = 1;
-            container.style.transform = `scale(${currentZoom})`;
+            initializeTree();
         }
 
         function logout() {
@@ -695,6 +762,40 @@
                 e.preventDefault();
                 resetZoom();
             }
+        });
+
+        // Make the tree draggable for navigation
+        let isDragging = false;
+        let startX, startY, scrollLeft, scrollTop;
+
+        treeContainer.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.pageX - treeContainer.offsetLeft;
+            startY = e.pageY - treeContainer.offsetTop;
+            scrollLeft = treeContainer.scrollLeft;
+            scrollTop = treeContainer.scrollTop;
+            treeContainer.style.cursor = 'grabbing';
+        });
+
+        treeContainer.addEventListener('mouseleave', () => {
+            isDragging = false;
+            treeContainer.style.cursor = 'grab';
+        });
+
+        treeContainer.addEventListener('mouseup', () => {
+            isDragging = false;
+            treeContainer.style.cursor = 'grab';
+        });
+
+        treeContainer.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - treeContainer.offsetLeft;
+            const y = e.pageY - treeContainer.offsetTop;
+            const walkX = (x - startX) * 2;
+            const walkY = (y - startY) * 2;
+            treeContainer.scrollLeft = scrollLeft - walkX;
+            treeContainer.scrollTop = scrollTop - walkY;
         });
     </script>
 </body>
