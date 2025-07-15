@@ -58,70 +58,71 @@ def memory_detail(request, id):
     return render(request, 'memory_detail.html', {'memory': memory})
 
 
-#---------------User Registration --------------------
-
+# ------------------ User Registration ------------------
 def register(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        first_name = request.POST.get('first_name')
-        password1 = request.POST.get('password1')
-        password2 = request.POST.get('password2')
-        phone_number = request.POST.get('phone')
+    if request.method == "POST":
+        email        = request.POST.get("email")
+        first_name   = request.POST.get("first_name")
+        password1    = request.POST.get("password1")
+        password2    = request.POST.get("password2")
+        phone_number = request.POST.get("phone")
 
+        # 1️⃣ password match check
         if password1 != password2:
             messages.error(request, "Passwords do not match.")
-            return redirect('forms')
+            return redirect("register")
 
+        # 2️⃣ user already exists check
         if User.objects.filter(username=email).exists():
             messages.error(request, "User already exists.")
-            return redirect('forms')
+            return redirect("register")
 
+        # 3️⃣ create user & profile
         try:
             user = User.objects.create_user(
                 username=email,
                 email=email,
                 password=password1,
-                first_name=first_name
+                first_name=first_name,
             )
-
             Profile.objects.create(
                 user=user,
                 full_name=first_name,
-                phone_number=phone_number
+                phone_number=phone_number,
             )
-
-            messages.success(request, f'Account created for {email}!')
-            return redirect('login')
-
+            messages.success(request, f"Account created for {email}!")
+            return redirect("login")
         except Exception as e:
-            messages.error(request, f'Error: {str(e)}')
+            messages.error(request, f"Error: {str(e)}")
+            return redirect("register")
 
-    return render(request, 'forms.html')
+    # GET request → render the shared form
+    return render(request, "forms.html")
 
-# -------- Login -------------------
 
+# ------------------ Login ------------------
 def custom_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
 
         user = authenticate(username=username, password=password)
-
-        if user is not None:
+        if user:
             login(request, user)
-            messages.success(request, f'Welcome back, {username}!')
-            return redirect('family_pillars')  # Redirect to family-pillars after login
-        else:
-            messages.error(request, 'Invalid username or password.')
+            messages.success(request, f"Welcome back, {username}!")
+            return redirect("family_pillars")
+        messages.error(request, "Invalid username or password.")
+        return redirect("login")
 
-    return render(request, 'forms.html')
+    # GET request
+    return render(request, "forms.html")
 
 
+# ------------------ Logout ------------------
 def custom_logout(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
-    return redirect('login')  # or any other page you want to redirect to
-
+    return redirect("login")
 # -----------------------------------------------------------------------------------------------------#
 
 def discussion_view(request):

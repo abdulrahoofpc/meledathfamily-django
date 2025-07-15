@@ -549,10 +549,10 @@
 <body>
     <div class="header-container">
         <h1>Thoma_Family Tree</h1>
-        <button class="logout-btn" onclick="logout()">
-            <i class="fas fa-sign-out-alt logout-icon"></i>
-            Logout
-        </button>
+        <a href="{% url 'logout' %}" class="logout-btn" style="text-decoration: none;">
+        <i class="fas fa-sign-out-alt logout-icon"></i>
+        Logout
+        </a>
     </div>
 
     <div class="tree-wrapper">
