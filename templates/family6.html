@@ -1,7 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Aipu_family Tree</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{%  static 'images/favicon/favicon-96x96.png' %}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{%  static 'images/favicon/favicon.svg' %}" />
+    <link rel="shortcut icon" href="{%  static 'images/favicon/favicon.ico' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{%  static 'images/favicon/apple-touch-icon.png' %}" />
+    <link rel="manifest" href="{%  static 'images/favicon/site.webmanifest' %}" />
+    <title>Chakoru_Family Tree</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Oxygen');
         * {
@@ -13,45 +20,72 @@
             background: linear-gradient(hsl(221, 56.90%, 48.20%), hsl(206, 84.60%, 45.90%));
             min-height: 100vh;
             font-family: Oxygen, sans-serif;
-        }
-        #container {
-            margin: 0 auto;
-            width: 90%;
-            max-width: 1200px;
-            padding: 20px 0;
-            transform-origin: top center;
-            transition: transform 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding: 10px 20px 0px 20px;
+            padding: 15px 20px;
+            background: rgba(0,0,0,0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         h1 {
-            text-align: center;
             color: #fff;
-            margin-bottom: 0;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
             flex-grow: 1;
+            font-size: 1.8rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .tree-wrapper {
+            flex: 1;
+            margin-top: 70px;
+            overflow: auto;
+            width: 100%;
+            height: calc(100vh - 70px);
+            cursor: grab;
+        }
+        .tree-container {
+            width: fit-content;
+            min-width: 100%;
+            margin: 0 auto;
+            position: relative;
+            transition: transform 0.2s ease-out;
+            transform-origin: 0 0;
+            padding: 40px 20px;
         }
         .tree {
-            width: 100%;
+            display: inline-block;
+            white-space: nowrap;
+            padding: 20px;
         }
-        .tree, .tree ul {
-            width: max-content;
-            padding-top: 20px; 
+        .tree > ul {
+            display: flex;
+            justify-content: center;
+        }
+        .tree ul {
+            padding-top: 20px;
             position: relative;
-            transition: all 0.5s;
+            display: flex;
+            justify-content: center;
         }
         .tree li {
-            float: left; 
+            display: inline-block;
             text-align: center;
             list-style-type: none;
             position: relative;
             padding: 20px 5px 0 5px;
-            transition: all 0.5s;
+            vertical-align: top;
+            margin: 0 10px;
         }
         .tree li::before, .tree li::after {
             content: '';
@@ -120,6 +154,7 @@
             position: relative;
             z-index: 1;
             cursor: pointer;
+            white-space: normal;
         }
         .member-box.male {
             background: hsl(210, 80%, 20%);
@@ -128,6 +163,23 @@
         .member-box.female {
             background: hsl(330, 80%, 20%);
             margin-left: 15px;
+        }
+        .main-member-icon {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: gold;
+            color: #000;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            z-index: 2;
         }
         .member-photo img {
             display: block;
@@ -147,6 +199,7 @@
         .member-name {
             font-weight: bold;
             margin-bottom: 5px;
+            word-break: break-word;
         }
         .member-spouses {
             font-size: 0.8rem;
@@ -206,7 +259,7 @@
             padding: 25px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            width: 80%;
+            width: 90%;
             max-width: 800px;
             color: white;
             position: relative;
@@ -257,6 +310,7 @@
         .detail-row {
             display: flex;
             margin-bottom: 10px;
+            flex-wrap: wrap;
         }
         .detail-label {
             font-weight: bold;
@@ -265,6 +319,7 @@
         }
         .detail-value {
             flex: 1;
+            min-width: 200px;
         }
         .spouse-container {
             display: flex;
@@ -380,6 +435,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
         }
         .logout-btn:hover {
             background: linear-gradient(145deg, #d32f2f, #f44336);
@@ -416,9 +472,6 @@
         }
 
         @media all and (max-width: 875px) {
-            #container {
-                width: 95%;
-            }
             .member-photo img {
                 width: 60px;
                 height: 60px;
@@ -432,6 +485,11 @@
             .member-box.female {
                 margin-left: 10px;
             }
+            .main-member-icon {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
+            }
         }
         @media all and (max-width: 575px) {
             .member-photo img {
@@ -439,16 +497,13 @@
             }
             .member-box {
                 min-width: 100px;
+                padding: 8px;
             }
             .modal-body {
                 flex-direction: column;
             }
             .modal-image {
                 margin-bottom: 15px;
-            }
-            .header-container {
-                flex-direction: column;
-                gap: 10px;
             }
             .zoom-controls {
                 bottom: 15px;
@@ -459,11 +514,16 @@
                 height: 40px;
                 font-size: 18px;
             }
+            .modal-content {
+                width: 95%;
+                padding: 15px;
+            }
         }
         @media all and (max-width: 500px) { 
             .tree li {
-                float: none; 
+                display: block;
                 text-align: left;
+                margin: 10px 0;
             }
             .member-box {
                 border: initial;
@@ -479,23 +539,30 @@
             .member-box.male, .member-box.female {
                 margin: 5px 0;
             }
+            .tree ul {
+                display: block;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="header-container">
-        <h1>Aipu_family Tree</h1>
+        <h1>Chakoru_Family Tree</h1>
         <button class="logout-btn" onclick="logout()">
             <i class="fas fa-sign-out-alt logout-icon"></i>
             Logout
         </button>
     </div>
 
-    <div id="container">
-        <ul class="tree">
-            {% include 'family6memb.html' with member=member %}
-        </ul>
+    <div class="tree-wrapper">
+        <div class="tree-container" id="treeContainer">
+            <div class="tree">
+                <ul>
+                    {% include 'family6memb.html' with member=member is_main_member=True %}
+                </ul>
+            </div>
+        </div>
     </div>
 
     <!-- Zoom Controls -->
@@ -521,9 +588,54 @@
         let currentZoom = 1;
         const zoomStep = 0.1;
         const minZoom = 0.5;
-        const maxZoom = 1.5;
-        const container = document.getElementById('container');
+        const maxZoom = 2.0;
+        const treeContainer = document.getElementById('treeContainer');
+        const treeWrapper = document.querySelector('.tree-wrapper');
         let currentMemberId = null;
+        let isInitialized = false;
+
+        // Initialize the tree to fit the screen
+        function initializeTree() {
+            const treeWidth = treeContainer.scrollWidth;
+            const treeHeight = treeContainer.scrollHeight;
+            const wrapperWidth = treeWrapper.clientWidth;
+            const wrapperHeight = treeWrapper.clientHeight;
+            
+            // Calculate the zoom level that fits both width and height
+            const widthRatio = wrapperWidth / treeWidth;
+            const heightRatio = wrapperHeight / treeHeight;
+            currentZoom = Math.min(widthRatio, heightRatio) * 0.9;
+            
+            // Apply the zoom
+            treeContainer.style.transform = `scale(${currentZoom})`;
+            
+            // Center the tree
+            centerTree();
+            
+            isInitialized = true;
+        }
+
+        function centerTree() {
+            const scaledWidth = treeContainer.scrollWidth * currentZoom;
+            const scaledHeight = treeContainer.scrollHeight * currentZoom;
+            
+            treeWrapper.scrollLeft = (scaledWidth - treeWrapper.clientWidth) / 2;
+            treeWrapper.scrollTop = (scaledHeight - treeWrapper.clientHeight) / 2;
+        }
+
+        // Call initializeTree after the page loads
+        window.addEventListener('load', function() {
+            initializeTree();
+            
+            // Also initialize when window is resized
+            window.addEventListener('resize', function() {
+                if (isInitialized) {
+                    centerTree();
+                } else {
+                    initializeTree();
+                }
+            });
+        });
 
         function openModal(memberId, event) {
             if (event) event.stopPropagation();
@@ -559,6 +671,20 @@
             
             const nameHeader = document.createElement('h2');
             nameHeader.textContent = name;
+            
+            // Add main member indicator if this is the main member
+            if (popupContent.classList.contains('main-member-popup')) {
+                const mainMemberBadge = document.createElement('span');
+                mainMemberBadge.style.marginLeft = '10px';
+                mainMemberBadge.style.fontSize = '0.6em';
+                mainMemberBadge.style.background = 'gold';
+                mainMemberBadge.style.color = 'black';
+                mainMemberBadge.style.padding = '3px 8px';
+                mainMemberBadge.style.borderRadius = '10px';
+                mainMemberBadge.textContent = 'Main Member';
+                nameHeader.appendChild(mainMemberBadge);
+            }
+            
             detailsDiv.appendChild(nameHeader);
             
             details.forEach(detail => {
@@ -596,7 +722,11 @@
                                 
                                 const spousePhoto = document.createElement('div');
                                 spousePhoto.className = 'spouse-photo';
-                                const spouseImg = spouseElement.querySelector('img').cloneNode(true);
+                                const spouseImg = spouseElement.querySelector('img')?.cloneNode(true) || 
+                                    document.createElement('img');
+                                if (!spouseElement.querySelector('img')) {
+                                    spouseImg.src = 'https://via.placeholder.com/40?text=No+Photo';
+                                }
                                 spouseImg.style.display = 'block';
                                 spousePhoto.appendChild(spouseImg);
                                 
@@ -662,21 +792,46 @@
 
         function zoomIn() {
             if (currentZoom < maxZoom) {
+                // Get current scroll positions before zoom
+                const scrollLeftBefore = treeWrapper.scrollLeft;
+                const scrollTopBefore = treeWrapper.scrollTop;
+                const centerX = scrollLeftBefore + treeWrapper.clientWidth / 2;
+                const centerY = scrollTopBefore + treeWrapper.clientHeight / 2;
+                
                 currentZoom += zoomStep;
-                container.style.transform = `scale(${currentZoom})`;
+                treeContainer.style.transform = `scale(${currentZoom})`;
+                
+                // Calculate new scroll positions to maintain center
+                const newCenterX = centerX * (currentZoom / (currentZoom - zoomStep));
+                const newCenterY = centerY * (currentZoom / (currentZoom - zoomStep));
+                
+                treeWrapper.scrollLeft = newCenterX - treeWrapper.clientWidth / 2;
+                treeWrapper.scrollTop = newCenterY - treeWrapper.clientHeight / 2;
             }
         }
 
         function zoomOut() {
             if (currentZoom > minZoom) {
+                // Get current scroll positions before zoom
+                const scrollLeftBefore = treeWrapper.scrollLeft;
+                const scrollTopBefore = treeWrapper.scrollTop;
+                const centerX = scrollLeftBefore + treeWrapper.clientWidth / 2;
+                const centerY = scrollTopBefore + treeWrapper.clientHeight / 2;
+                
                 currentZoom -= zoomStep;
-                container.style.transform = `scale(${currentZoom})`;
+                treeContainer.style.transform = `scale(${currentZoom})`;
+                
+                // Calculate new scroll positions to maintain center
+                const newCenterX = centerX * (currentZoom / (currentZoom + zoomStep));
+                const newCenterY = centerY * (currentZoom / (currentZoom + zoomStep));
+                
+                treeWrapper.scrollLeft = newCenterX - treeWrapper.clientWidth / 2;
+                treeWrapper.scrollTop = newCenterY - treeWrapper.clientHeight / 2;
             }
         }
 
         function resetZoom() {
-            currentZoom = 1;
-            container.style.transform = `scale(${currentZoom})`;
+            initializeTree();
         }
 
         function logout() {
@@ -695,6 +850,40 @@
                 e.preventDefault();
                 resetZoom();
             }
+        });
+
+        // Make the tree draggable for navigation
+        let isDragging = false;
+        let startX, startY, scrollLeft, scrollTop;
+
+        treeWrapper.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.pageX - treeWrapper.offsetLeft;
+            startY = e.pageY - treeWrapper.offsetTop;
+            scrollLeft = treeWrapper.scrollLeft;
+            scrollTop = treeWrapper.scrollTop;
+            treeWrapper.style.cursor = 'grabbing';
+        });
+
+        treeWrapper.addEventListener('mouseleave', () => {
+            isDragging = false;
+            treeWrapper.style.cursor = 'grab';
+        });
+
+        treeWrapper.addEventListener('mouseup', () => {
+            isDragging = false;
+            treeWrapper.style.cursor = 'grab';
+        });
+
+        treeWrapper.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - treeWrapper.offsetLeft;
+            const y = e.pageY - treeWrapper.offsetTop;
+            const walkX = (x - startX) * 2;
+            const walkY = (y - startY) * 2;
+            treeWrapper.scrollLeft = scrollLeft - walkX;
+            treeWrapper.scrollTop = scrollTop - walkY;
         });
     </script>
 </body>

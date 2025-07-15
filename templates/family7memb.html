@@ -5,6 +5,9 @@
             <div class="member-box 
                         {% if member.gender == 'M' %}male{% elif member.gender == 'F' %}female{% endif %}"
                  data-member-id="{{ member.id }}" onclick="openModal({{ member.id }}, event)">
+                {% if is_main_member %}
+                    <div class="main-member-icon" title="Main Member">M</div>
+                {% endif %}
                 <div class="member-photo">
                     {% if member.photo %}
                         <img src="{{ member.photo.url }}" alt="{{ member.first_name }}">
@@ -107,7 +110,7 @@
         </div>
 
         <!-- Hidden popup content for main member -->
-        <div style="display:none;" id="popup-{{ member.id }}">
+        <div style="display:none;" id="popup-{{ member.id }}" {% if is_main_member %}class="main-member-popup"{% endif %}>
             <div class="popup-image">
                 {% if member.photo %}
                     <img src="{{ member.photo.url }}" alt="{{ member.first_name }}">
@@ -152,7 +155,7 @@
         {% if member.get_children %}
             <ul class="children-list">
                 {% for child in member.get_children %}
-                    {% include 'family1memb.html' with member=child %}
+                    {% include 'family7memb.html' with member=child %}
                 {% endfor %}
             </ul>
         {% endif %}
