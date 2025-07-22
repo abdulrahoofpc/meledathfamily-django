@@ -9,8 +9,12 @@ from django.contrib.auth.decorators import login_required
 
 
 def team_list(request):
-    members = TeamMember.objects.all()
-    return render(request, 'our-team.html', {'members': members})
+    members = TeamMember.objects.filter(is_women_association=False)
+    women_members = TeamMember.objects.filter(is_women_association=True)
+    return render(request, 'our-team.html', {
+        'members': members,
+        'women_members': women_members
+    })
 
 def team_detail(request, slug):
     member = get_object_or_404(TeamMember, slug=slug)

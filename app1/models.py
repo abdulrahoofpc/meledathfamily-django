@@ -31,15 +31,26 @@ class TeamMember(models.Model):
     image = models.ImageField(upload_to='team/')
     bio = models.TextField(blank=True)
     slug = models.SlugField(unique=True)
-    
-    # Socials
+
+    # Social media links
     facebook = models.URLField(blank=True)
     twitter = models.URLField(blank=True)
     linkedin = models.URLField(blank=True)
     instagram = models.URLField(blank=True)
 
+    # New fields
+    is_women_association = models.BooleanField(default=False)
+    gender = models.CharField(
+        max_length=10,
+        choices=(('Male', 'Male'), ('Female', 'Female')),
+        blank=True
+    )
+
     def __str__(self):
         return self.name
+    
+
+    
 
 
 class Topic(models.Model):

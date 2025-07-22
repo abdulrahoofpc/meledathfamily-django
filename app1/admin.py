@@ -5,20 +5,37 @@ from .models import (
     Comment, TeamMember, PremiumEvent, PremiumEventImage
 )
 
+
 @admin.register(PremiumEvent)
 class PremiumEventAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("title",)}  # Slug is auto-generated from title
+    prepopulated_fields = {"slug": ("title",)}  # Slug auto-generated from title
     list_display = ('title', 'slug', 'date', 'location')
     search_fields = ('title', 'location')
     list_filter = ('date',)
+
 
 @admin.register(PremiumEventImage)
 class PremiumEventImageAdmin(admin.ModelAdmin):
     list_display = ('event', 'caption')
 
-admin.site.register(TeamMember)
-admin.site.register(Topic)
-admin.site.register(Comment)
+
+@admin.register(TeamMember)
+class TeamMemberAdmin(admin.ModelAdmin):
+    list_display = ('name', 'position', 'is_women_association')
+    list_filter = ('is_women_association',)
+    search_fields = ('name', 'position')
+    prepopulated_fields = {'slug': ('name',)}
+
+
+@admin.register(Topic)
+class TopicAdmin(admin.ModelAdmin):
+    pass  # Customize if needed
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass  # Customize if needed
+
 
 @admin.register(Memory)
 class MemoryAdmin(admin.ModelAdmin):
@@ -26,7 +43,9 @@ class MemoryAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_filter = ('birth_date', 'death_date')
 
+
 admin.site.register(Member, MPTTModelAdmin)
+
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -35,11 +54,13 @@ class ProfileAdmin(admin.ModelAdmin):
     list_filter = ('pin_code',)
     ordering = ('user__username',)
 
+
 @admin.register(Gallery)
 class GalleryAdmin(admin.ModelAdmin):
     list_display = ('headline', 'subhead')
     search_fields = ('headline', 'subhead')
     ordering = ('headline',)
+
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):

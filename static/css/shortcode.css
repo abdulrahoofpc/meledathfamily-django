@@ -923,7 +923,7 @@ body{
 /** Style 1 **/
 .pbmit-service-style-1 .pbminfotech-post-item .pbmit-box-content-wrap,
 .pbmit-service-style-1 .pbmit-featured-wrapper img{
-	transition: all 0.5s ease-in-out;
+	/* transition: all 0.5s ease-in-out; */
 }
 .pbmit-service-style-1,
 .pbmit-service-style-1 .pbminfotech-post-item{
@@ -932,7 +932,7 @@ body{
 .pbmit-service-style-1 .pbminfotech-post-item .pbmit-box-content-wrap {
 	padding: 10px 10px 30px;
 	border-radius: 20px;
-	background-color: var(--pbmit-light-color);
+	/* background-color: var(--pbmit-light-color); */
 	text-align: center;
 }
 .pbmit-service-style-1 .pbmit-featured-wrapper{
@@ -2045,7 +2045,7 @@ body{
 }
 .pbmit-title-bar-wrapper,
 .pbmit-title-bar-content{
-	min-height: 500px;
+	min-height: 300px ;
 }
 .pbmit-title-bar-content{
 	position: relative;
