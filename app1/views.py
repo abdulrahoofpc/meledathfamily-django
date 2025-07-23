@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login,logout
-from .models import Gallery, Event, Profile,Member,Memory,Topic, Comment,TeamMember,PremiumEvent
+from .models import Gallery, Event, Profile,Member,Memory,Topic, Comment,TeamMember,PremiumEvent,Advertisement
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -34,6 +34,7 @@ def family2(request):
 
 
 def Home(request):
+    advertisements = Advertisement.objects.all().order_by('-created_at')
     events = Event.objects.all().order_by('-date')[:4]
     memories = Memory.objects.all()
     topic = Topic.objects.first()
@@ -41,6 +42,7 @@ def Home(request):
     premium_events = PremiumEvent.objects.all()
 
     return render(request, 'index.html', {
+        'advertisements': advertisements,
         'events': events,
         'memories': memories,
         'topic': topic,

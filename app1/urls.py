@@ -25,5 +25,7 @@ urlpatterns = [
     path("familytree1/", views.FamilyTree1, name="familytree1"),
     path("events/", views.event_list, name="events"),
     path("gallery/", views.gallery_list, name="gallery"),
-]
 
+    # ----- Advertisements -----
+    # path("advertisements/", views.advertisement_list, name="advertisement_list"),  # Optional listing page
+]

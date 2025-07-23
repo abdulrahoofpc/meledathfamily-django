@@ -1480,6 +1480,7 @@ body{
 	background: rgba(255, 255, 255, .2);
 }
 .pbmit-blog-style-1 .post-item{
+	background-color: var(--pbmit-white-color);
 	border: 1px solid rgba(var(--pbmit-blackish-color-rgb), .2);
 	padding: 10px;
 	border-radius: 20px;
@@ -1902,8 +1903,6 @@ body{
 /*----------------------------------------*/
 .site-footer{
 	font-size: 15px;
-	margin: 0 30px 30px;
-    border-radius: 20px;
     padding: 20px 0 100px 0;
 	color: rgba(var(--pbmit-white-color-rgb),1);
 	background-image: url(../images/bg/footer-bg.png);

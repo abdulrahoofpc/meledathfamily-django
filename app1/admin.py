@@ -2,22 +2,20 @@ from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 from .models import (
     Gallery, Event, Profile, Member, Memory, Topic,
-    Comment, TeamMember, PremiumEvent, PremiumEventImage
+    Comment, TeamMember, PremiumEvent, PremiumEventImage,
+    Advertisement  # ← Add this line
 )
-
 
 @admin.register(PremiumEvent)
 class PremiumEventAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("title",)}  # Slug auto-generated from title
+    prepopulated_fields = {"slug": ("title",)}
     list_display = ('title', 'slug', 'date', 'location')
     search_fields = ('title', 'location')
     list_filter = ('date',)
 
-
 @admin.register(PremiumEventImage)
 class PremiumEventImageAdmin(admin.ModelAdmin):
     list_display = ('event', 'caption')
-
 
 @admin.register(TeamMember)
 class TeamMemberAdmin(admin.ModelAdmin):
@@ -26,16 +24,13 @@ class TeamMemberAdmin(admin.ModelAdmin):
     search_fields = ('name', 'position')
     prepopulated_fields = {'slug': ('name',)}
 
-
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
-    pass  # Customize if needed
-
+    pass
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    pass  # Customize if needed
-
+    pass
 
 @admin.register(Memory)
 class MemoryAdmin(admin.ModelAdmin):
@@ -43,9 +38,7 @@ class MemoryAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_filter = ('birth_date', 'death_date')
 
-
 admin.site.register(Member, MPTTModelAdmin)
-
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -54,13 +47,11 @@ class ProfileAdmin(admin.ModelAdmin):
     list_filter = ('pin_code',)
     ordering = ('user__username',)
 
-
 @admin.register(Gallery)
 class GalleryAdmin(admin.ModelAdmin):
     list_display = ('headline', 'subhead')
     search_fields = ('headline', 'subhead')
     ordering = ('headline',)
-
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
@@ -68,3 +59,10 @@ class EventAdmin(admin.ModelAdmin):
     list_filter = ('category', 'date')
     search_fields = ('headline', 'subhead')
     ordering = ('-date',)
+
+#  Advertisement admin
+@admin.register(Advertisement)
+class AdvertisementAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at')
+    search_fields = ('title',)
+    ordering = ('-created_at',)

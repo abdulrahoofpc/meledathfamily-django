@@ -20,18 +20,19 @@
                                         <div class="pbmit-contact-widget-line pbmit-base-icon-phone">800 100 975 20 34<br> + (123) 1800-234-5678</div>
                                     </div>
                                 </aside>
-                                <aside class="pbmit-email-custom widget widget_text">
+                                {% comment %} <aside class="pbmit-email-custom widget widget_text">
                                     <h2 class="widget-title">Email</h2>
                                     <div class="textwidget">
                                         <p>meledathfamily@gmail.com</p>
                                     </div>	
-                                </aside>
+                                </aside> {% endcomment %}
                             </div>
                             <div class="pbmit-footer-widget-col-2">
                                 <aside class="pbmit-location-social widget widget_text">
                                     <h2 class="widget-title">Address</h2>
-                                    <div class="textwidget"><p>975 Liberty Ave, Union, NJ 07083, USA</p>
-                                        <h2 class="widget-title">Social Network</h2>
+                                    <div class="textwidget">
+                                        <p>975 Liberty Ave, Union, NJ 07083, USA</p>
+                                        {% comment %} <h2 class="widget-title">Social Network</h2>
                                         <ul class="pbmit-social-links">
                                             <li class="pbmit-social-li pbmit-social-facebook">
                                                 <a title="Facebook" href="#" target="_blank">
@@ -53,7 +54,7 @@
                                                     <span><i class="pbmit-base-icon-instagram"></i></span>
                                                 </a>
                                             </li>
-                                        </ul>
+                                        </ul> {% endcomment %}
                                     </div>
                                 </aside>
                             </div>
@@ -65,8 +66,7 @@
                                                 <li><a href="{% url 'home' %}">Home</a></li>
                                                 <li><a href="{% url 'history' %}">Family History</a></li>
                                                 <li><a href="{% url 'events' %}">Our Events</a></li>
-                                                <li><a href="{% url 'team' %}">Board of Directors</a></li>
-                                                <li><a href="{% url 'gallery' %}">Gallery</a></li>
+                                                
                                         </ul>
                                     </div>
                                 </aside>
@@ -75,8 +75,8 @@
                                 <aside class="widget">
                                     <h2 class="widget-title">Family Tree</h2>
                                     <ul>
-                                        <li><a href="{% url 'register' %}">Sign In</a></li>
-                                        <li><a href="{% url 'register' %}">Sign Up</a></li>
+                                        <li><a href="{% url 'team' %}">Board of Directors</a></li>
+                                        <li><a href="{% url 'gallery' %}">Gallery</a></li>
                                     </ul>
                                 </aside>
                             </div>
