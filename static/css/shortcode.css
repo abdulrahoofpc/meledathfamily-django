@@ -883,6 +883,7 @@ body{
 }
 .pbminfotech-ele-fid-style-2 .pbmit-fld-wrap{
 	display: flex;
+    justify-content: center;
 	align-items: center;
 }
 .pbminfotech-ele-fid-style-2 .pbmit-fid-inner sub,
@@ -2047,6 +2048,7 @@ body{
 	min-height: 300px ;
 }
 .pbmit-title-bar-content{
+	text-align: center;
 	position: relative;
     z-index: 1;
     display: flex;
