@@ -1031,21 +1031,25 @@ document.addEventListener('DOMContentLoaded', function() {
 <section class="modern-ad-slider">
     <!-- Header with gradient accent -->
     
-
     <!-- Slider container -->
+<div class="mb-3" style="text-align: center;">
+		<h4 class="pbmit-subtitle">Our Advertising Partners</h4>
+	</div>
+<div class="advertisements-section">
     <div class="swiper-container">
-    <div class="swiper-wrapper">
-        {% for ad in advertisements %}
-            <div class="swiper-slide">
-                {% if ad.link %}
-                    <a href="{{ ad.link }}" target="_blank">
+        <div class="swiper-wrapper">
+            {% for ad in advertisements %}
+                <div class="swiper-slide">
+                    {% if ad.link %}
+                        <a href="{{ ad.link }}" target="_blank">
+                            <img src="{{ ad.image.url }}" alt="{{ ad.title }}" loading="lazy">
+                        </a>
+                    {% else %}
                         <img src="{{ ad.image.url }}" alt="{{ ad.title }}" loading="lazy">
-                    </a>
-                {% else %}
-                    <img src="{{ ad.image.url }}" alt="{{ ad.title }}" loading="lazy">
-                {% endif %}
-            </div>
-        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 
