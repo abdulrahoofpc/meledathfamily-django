@@ -92,18 +92,18 @@
             position: absolute; 
             top: 0; 
             right: 50%;
-            border-top: 1px solid #ccc;
+            border-top: 5px solid #ccc;
             width: 50%; 
             height: 20px;
         }
         .tree li::after {
             right: auto; 
-            left: 50%;
+            left: auto;
             border-left: 3px solid #ccc;
         }
         .tree li:only-child::after, 
         .tree li:only-child::before {
-            display: none;
+            {% comment %} display: none; {% endcomment %}
         }
         .tree li:only-child { 
             padding-top: 0;
@@ -605,7 +605,7 @@
             // Calculate the zoom level that fits both width and height
             const widthRatio = wrapperWidth / treeWidth;
             const heightRatio = wrapperHeight / treeHeight;
-            currentZoom = Math.min(widthRatio, heightRatio) * 0.9;
+            currentZoom = Math.min(widthRatio, heightRatio) * 1;
             
             // Apply the zoom
             treeContainer.style.transform = `scale(${currentZoom})`;
@@ -888,4 +888,5 @@
         });
     </script>
 </body>
-</html>
+</html> 
+
