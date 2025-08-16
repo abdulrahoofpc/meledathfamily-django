@@ -2,14 +2,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Thoma_Family Tree</title>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{%  static 'images/favicon/favicon-96x96.png' %}" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="{%  static 'images/favicon/favicon.svg' %}" />
     <link rel="shortcut icon" href="{%  static 'images/favicon/favicon.ico' %}" />
     <link rel="apple-touch-icon" sizes="180x180" href="{%  static 'images/favicon/apple-touch-icon.png' %}" />
     <link rel="manifest" href="{%  static 'images/favicon/site.webmanifest' %}" />
-    <title>Francis_Family Tree</title>
-    <style>
+     <style>
         @import url('https://fonts.googleapis.com/css?family=Oxygen');
         * {
             margin: 0; 
@@ -92,18 +92,18 @@
             position: absolute; 
             top: 0; 
             right: 50%;
-            border-top: 1px solid #ccc;
+            border-top: 5px solid #ccc;
             width: 50%; 
             height: 20px;
         }
         .tree li::after {
             right: auto; 
-            left: 50%;
+            left: auto;
             border-left: 3px solid #ccc;
         }
         .tree li:only-child::after, 
         .tree li:only-child::before {
-            display: none;
+            {% comment %} display: none; {% endcomment %}
         }
         .tree li:only-child { 
             padding-top: 0;
@@ -547,13 +547,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="header-container">
-        <h1>Francis_Family Tree</h1>
-        <a href="{% url 'logout' %}" class="logout-btn" style="text-decoration: none;">
-        <i class="fas fa-sign-out-alt logout-icon"></i>
-        Logout
-    </a>
-    </div>
+        <div class="header-container">
+            <h1>Thoma Family Tree</h1>
+            <a href="{% url 'logout' %}" class="logout-btn" style="text-decoration: none;">
+                <i class="fas fa-sign-out-alt logout-icon"></i>
+                Logout
+            </a>
+        </div>
+
 
     <div class="tree-wrapper">
         <div class="tree-container" id="treeContainer">
@@ -604,7 +605,7 @@
             // Calculate the zoom level that fits both width and height
             const widthRatio = wrapperWidth / treeWidth;
             const heightRatio = wrapperHeight / treeHeight;
-            currentZoom = Math.min(widthRatio, heightRatio) * 0.9;
+            currentZoom = Math.min(widthRatio, heightRatio) * 1;
             
             // Apply the zoom
             treeContainer.style.transform = `scale(${currentZoom})`;
