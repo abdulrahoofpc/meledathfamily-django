@@ -2,558 +2,559 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Varunny_family Tree</title>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{%  static 'images/favicon/favicon-96x96.png' %}" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="{%  static 'images/favicon/favicon.svg' %}" />
     <link rel="shortcut icon" href="{%  static 'images/favicon/favicon.ico' %}" />
     <link rel="apple-touch-icon" sizes="180x180" href="{%  static 'images/favicon/apple-touch-icon.png' %}" />
     <link rel="manifest" href="{%  static 'images/favicon/site.webmanifest' %}" />
-    <title>Varunny_Family Tree</title>
-   <style>
-    @import url('https://fonts.googleapis.com/css?family=Oxygen');
-    * {
-        margin: 0; 
-        padding: 0;
-        box-sizing: border-box;
-    }
-    body { 
-        background: linear-gradient(hsl(221, 56.90%, 48.20%), hsl(206, 84.60%, 45.90%));
-        min-height: 100vh;
-        font-family: Oxygen, sans-serif;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-    }
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 20px;
-        background: rgba(0,0,0,0.2);
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    }
-    h1 {
-        color: #fff;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        flex-grow: 1;
-        font-size: 1.8rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .tree-wrapper {
-        flex: 1;
-        margin-top: 70px;
-        overflow: auto;
-        width: 100%;
-        height: calc(100vh - 70px);
-        cursor: grab;
-    }
-    .tree-container {
-        width: fit-content;
-        min-width: 100%;
-        margin: 0 auto;
-        position: relative;
-        transition: transform 0.2s ease-out;
-        transform-origin: 0 0;
-        padding: 40px 20px;
-    }
-    .tree {
-        display: inline-block;
-        white-space: nowrap;
-        padding: 20px;
-    }
-    .tree > ul {
-        display: flex;
-        justify-content: center;
-    }
-    .tree ul {
-        padding-top: 20px;
-        position: relative;
-        display: flex;
-        justify-content: center;
-    }
-    .tree li {
-        display: inline-block;
-        text-align: center;
-        list-style-type: none;
-        position: relative;
-        padding: 20px 5px 0 5px;
-        vertical-align: top;
-        margin: 0 10px;
-    }
-    .tree li::before, .tree li::after {
-        content: '';
-        position: absolute; 
-        top: 0; 
-        right: 50%;
-        border-top: 5px solid #ccc;
-        width: 50%; 
-        height: 20px;
-    }
-    .tree li::after {
-        right: auto; 
-        left: auto;
-        border-left: 3px solid #ccc;
-    }
-    .tree li:only-child::after, 
-    .tree li:only-child::before {
-        {% comment %} display: none; {% endcomment %}
-    }
-    .tree li:only-child { 
-        padding-top: 0;
-    }
-    .tree li:first-child::before, 
-    .tree li:last-child::after {
-        border: 0;
-    }
-    .tree li:last-child::before {
-        border-right: 3px solid #ccc;
-        border-radius: 0 5px 0 0;
-    }
-    .tree li:first-child::after {
-        border-radius: 5px 0 0 0;
-    }
-    .tree ul::before {
-        content: '';
-        position: absolute; 
-        top: 0; 
-        left: 50%;
-        border-left: 3px solid #ccc;
-        width: 0; 
-        height: 20px;
-    }
-    .member-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .member-couple {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        position: relative;
-    }
-    .member-box {
-        border: 1px solid #ccc;
-        padding: 10px;
-        text-decoration: none;
-        width: min-content;
-        color: #fff;
-        font-size: 1rem;
-        display: inline-block;
-        border-radius: 5px;
-        transition: all 0.5s;
-        background: hsl(22,22%,2%);
-        min-width: 150px;
-        position: relative;
-        z-index: 1;
-        cursor: pointer;
-        white-space: normal;
-    }
-    .member-box.male {
-        background: hsl(210, 80%, 20%);
-        margin-right: 15px;
-    }
-    .member-box.female {
-        background: hsl(330, 80%, 20%);
-        margin-left: 15px;
-    }
-    .main-member-icon {
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        background: gold;
-        color: #000;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        font-weight: bold;
-        box-shadow: 0 0 5px rgba(0,0,0,0.5);
-        z-index: 2;
-    }
-    .member-photo img {
-        display: block;
-        margin: 0 auto;
-        margin-bottom: 1rem;
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #ccc;
-        transition: all 0.3s;
-    }
-    .member-box:hover .member-photo img {
-        transform: scale(1.1);
-        box-shadow: 0 0 10px rgba(255,255,255,0.5);
-    }
-    .member-name {
-        font-weight: bold;
-        margin-bottom: 5px;
-        word-break: break-word;
-    }
-    .member-spouses {
-        font-size: 0.8rem;
-        margin-bottom: 5px;
-    }
-    .member-category {
-        font-size: 0.7rem;
-        padding: 3px 5px;
-        border-radius: 3px;
-        display: inline-block;
-        margin-top: 5px;
-        font-weight: bold;
-    }
-    .category-lm {
-        background: linear-gradient(135deg, #4CAF50, #2E7D32);
-        color: white;
-        border: 1px solid #2E7D32;
-    }
-    .category-pm {
-        background: linear-gradient(135deg, #2196F3, #1565C0);
-        color: white;
-        border: 1px solid #1565C0;
-    }
-    .category-nm {
-        background: linear-gradient(135deg, #f44336, #c62828);
-        color: white;
-        border: 1px solid #c62828;
-    }
-    .tree li a:hover, 
-    .tree li a:hover+ul li a {
-        background: hsl(140, 80%, 10%); 
-        border: 1px solid #94a0b4;
-        color: #fff;
-    }
-    .tree li a:hover+ul li::after, 
-    .tree li a:hover+ul li::before, 
-    .tree li a:hover+ul::before, 
-    .tree li a:hover+ul ul::before {
-        border-color: #94a0b4;
-    }
-
-    /* Modal Styles */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 100;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.8);
-        animation: fadeIn 0.3s;
-    }
-    .modal-content {
-        background: linear-gradient(135deg, hsl(140, 80%, 15%), hsl(60, 80%, 25%));
-        margin: 5% auto;
-        padding: 25px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        width: 90%;
-        max-width: 800px;
-        color: white;
-        position: relative;
-        border: 1px solid #4CAF50;
-    }
-    .close-btn {
-        position: absolute;
-        right: 20px;
-        top: 10px;
-        font-size: 28px;
-        font-weight: bold;
-        color: #fff;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    .close-btn:hover {
-        color: #f44336;
-        transform: scale(1.2);
-    }
-    .modal-body {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-    .modal-image {
-        flex: 1;
-        min-width: 200px;
-        text-align: center;
-    }
-    .modal-image img {
-        width: 200px;
-        height: 200px;
-        border-radius: 10px;
-        object-fit: cover;
-        border: 3px solid #fff;
-        box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
-    .modal-details {
-        flex: 2;
-        min-width: 300px;
-    }
-    .modal-details h2 {
-        margin-top: 0;
-        color: #4CAF50;
-        border-bottom: 1px solid #4CAF50;
-        padding-bottom: 10px;
-    }
-    .detail-row {
-        display: flex;
-        margin-bottom: 10px;
-        flex-wrap: wrap;
-    }
-    .detail-label {
-        font-weight: bold;
-        min-width: 120px;
-        color: #4CAF50;
-    }
-    .detail-value {
-        flex: 1;
-        min-width: 200px;
-    }
-    .spouse-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 10px;
-    }
-    .spouse-item {
-        display: flex;
-        align-items: center;
-        background: rgba(255,255,255,0.1);
-        padding: 8px;
-        border-radius: 8px;
-        transition: all 0.3s;
-        cursor: pointer;
-    }
-    .spouse-item:hover {
-        background: rgba(255,255,255,0.2);
-        transform: translateY(-2px);
-    }
-    .spouse-photo {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 10px;
-        overflow: hidden;
-    }
-    .spouse-photo img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .spouse-name {
-        font-weight: bold;
-    }
-    .family-photo-btn {
-        background: linear-gradient(145deg, #9C27B0, #7B1FA2);
-        color: white;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 10px;
-        font-weight: bold;
-        transition: all 0.3s;
-    }
-    .family-photo-btn:hover {
-        background: linear-gradient(145deg, #7B1FA2, #9C27B0);
-        transform: translateY(-2px);
-    }
-    .family-photo-container {
-        margin-top: 20px;
-        width: 100%;
-        text-align: center;
-    }
-    .family-photo {
-        max-width: 100%;
-        max-height: 300px;
-        border-radius: 10px;
-        border: 3px solid #fff;
-        box-shadow: 0 0 15px rgba(0,0,0,0.4);
-    }
-    @keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity: 1;}
-    }
-
-    /* Zoom Controls */
-    .zoom-controls {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        z-index: 50;
-    }
-    .zoom-btn {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: linear-gradient(145deg, #4CAF50, #45a049);
-        color: white;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s;
-    }
-    .zoom-btn:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.4);
-        background: linear-gradient(145deg, #45a049, #4CAF50);
-    }
-    .zoom-btn:active {
-        transform: scale(0.95);
-    }
-
-    /* Logout Button */
-    .logout-btn {
-        padding: 8px 20px;
-        background: linear-gradient(145deg, #f44336, #d32f2f);
-        color: white;
-        border: none;
-        border-radius: 25px;
-        cursor: pointer;
-        font-weight: bold;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        white-space: nowrap;
-    }
-    .logout-btn:hover {
-        background: linear-gradient(145deg, #d32f2f, #f44336);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        transform: translateY(-2px);
-    }
-    .logout-btn:active {
-        transform: translateY(0);
-    }
-    .logout-icon {
-        font-size: 18px;
-    }
-
-    /* Reset Zoom Button */
-    .reset-zoom-btn {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: linear-gradient(145deg, #2196F3, #1976D2);
-        color: white;
-        border: none;
-        font-size: 18px;
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s;
-    }
-    .reset-zoom-btn:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.4);
-        background: linear-gradient(145deg, #1976D2, #2196F3);
-    }
-
-    @media all and (max-width: 875px) {
-        .member-photo img {
-            width: 60px;
-            height: 60px;
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Oxygen');
+        * {
+            margin: 0; 
+            padding: 0;
+            box-sizing: border-box;
         }
-        .member-box {
-            min-width: 120px;
-        }
-        .member-box.male {
-            margin-right: 10px;
-        }
-        .member-box.female {
-            margin-left: 10px;
-        }
-        .main-member-icon {
-            width: 20px;
-            height: 20px;
-            font-size: 10px;
-        }
-    }
-    @media all and (max-width: 575px) {
-        .member-photo img {
-            display: none;
-        }
-        .member-box {
-            min-width: 100px;
-            padding: 8px;
-        }
-        .modal-body {
+        body { 
+            background: linear-gradient(hsl(221, 56.90%, 48.20%), hsl(206, 84.60%, 45.90%));
+            min-height: 100vh;
+            font-family: Oxygen, sans-serif;
+            overflow: hidden;
+            display: flex;
             flex-direction: column;
         }
-        .modal-image {
-            margin-bottom: 15px;
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(0,0,0,0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-        .zoom-controls {
-            bottom: 15px;
-            right: 15px;
+        h1 {
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            flex-grow: 1;
+            font-size: 1.8rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .zoom-btn, .reset-zoom-btn {
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
+        .tree-wrapper {
+            flex: 1;
+            margin-top: 70px;
+            overflow: auto;
+            width: 100%;
+            height: calc(100vh - 70px);
+            cursor: grab;
         }
-        .modal-content {
-            width: 95%;
-            padding: 15px;
+        .tree-container {
+            width: fit-content;
+            min-width: 100%;
+            margin: 0 auto;
+            position: relative;
+            transition: transform 0.2s ease-out;
+            transform-origin: 0 0;
+            padding: 40px 20px;
         }
-    }
-    @media all and (max-width: 500px) { 
-        .tree li {
-            display: block;
-            text-align: left;
-            margin: 10px 0;
+        .tree {
+            display: inline-block;
+            white-space: nowrap;
+            padding: 20px;
         }
-        .member-box {
-            border: initial;
-            width: initial;
-            min-width: initial;
-        }
-        .tree ul::before, .tree li::before, .tree li::after {
-            content: none;
-        }
-        .member-couple {
-            flex-direction: column;
-        }
-        .member-box.male, .member-box.female {
-            margin: 5px 0;
+        .tree > ul {
+            display: flex;
+            justify-content: center;
         }
         .tree ul {
-            display: block;
+            padding-top: 20px;
+            position: relative;
+            display: flex;
+            justify-content: center;
         }
-    }
-</style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        .tree li {
+            display: inline-block;
+            text-align: center;
+            list-style-type: none;
+            position: relative;
+            padding: 20px 5px 0 5px;
+            vertical-align: top;
+            margin: 0 10px;
+        }
+        .tree li::before, .tree li::after {
+            content: '';
+            position: absolute; 
+            top: 0; 
+            right: 50%;
+            border-top: 5px solid #ccc;
+            width: 50%; 
+            height: 20px;
+        }
+        .tree li::after {
+            right: auto; 
+            left: auto;
+            border-left: 3px solid #ccc;
+        }
+        .tree li:only-child::after, 
+        .tree li:only-child::before {
+            {% comment %} display: none; {% endcomment %}
+        }
+        .tree li:only-child { 
+            padding-top: 0;
+        }
+        .tree li:first-child::before, 
+        .tree li:last-child::after {
+            border: 0;
+        }
+        .tree li:last-child::before {
+            border-right: 3px solid #ccc;
+            border-radius: 0 5px 0 0;
+        }
+        .tree li:first-child::after {
+            border-radius: 5px 0 0 0;
+        }
+        .tree ul::before {
+            content: '';
+            position: absolute; 
+            top: 0; 
+            left: 50%;
+            border-left: 3px solid #ccc;
+            width: 0; 
+            height: 20px;
+        }
+        .member-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .member-couple {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .member-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-decoration: none;
+            width: min-content;
+            color: #fff;
+            font-size: 1rem;
+            display: inline-block;
+            border-radius: 5px;
+            transition: all 0.5s;
+            background: hsl(22,22%,2%);
+            min-width: 150px;
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            white-space: normal;
+        }
+        .member-box.male {
+            background: hsl(210, 80%, 20%);
+            margin-right: 15px;
+        }
+        .member-box.female {
+            background: hsl(330, 80%, 20%);
+            margin-left: 15px;
+        }
+        .main-member-icon {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: gold;
+            color: #000;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+        .member-photo img {
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 1rem;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ccc;
+            transition: all 0.3s;
+        }
+        .member-box:hover .member-photo img {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        .member-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            word-break: break-word;
+        }
+        .member-spouses {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        .member-category {
+            font-size: 0.7rem;
+            padding: 3px 5px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        .category-lm {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            border: 1px solid #2E7D32;
+        }
+        .category-pm {
+            background: linear-gradient(135deg, #2196F3, #1565C0);
+            color: white;
+            border: 1px solid #1565C0;
+        }
+        .category-nm {
+            background: linear-gradient(135deg, #f44336, #c62828);
+            color: white;
+            border: 1px solid #c62828;
+        }
+        .tree li a:hover, 
+        .tree li a:hover+ul li a {
+            background: hsl(140, 80%, 10%); 
+            border: 1px solid #94a0b4;
+            color: #fff;
+        }
+        .tree li a:hover+ul li::after, 
+        .tree li a:hover+ul li::before, 
+        .tree li a:hover+ul::before, 
+        .tree li a:hover+ul ul::before {
+            border-color: #94a0b4;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, hsl(140, 80%, 15%), hsl(60, 80%, 25%));
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            width: 90%;
+            max-width: 800px;
+            color: white;
+            position: relative;
+            border: 1px solid #4CAF50;
+        }
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .close-btn:hover {
+            color: #f44336;
+            transform: scale(1.2);
+        }
+        .modal-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .modal-image {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+        .modal-image img {
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 3px solid #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        .modal-details {
+            flex: 2;
+            min-width: 300px;
+        }
+        .modal-details h2 {
+            margin-top: 0;
+            color: #4CAF50;
+            border-bottom: 1px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .detail-label {
+            font-weight: bold;
+            min-width: 120px;
+            color: #4CAF50;
+        }
+        .detail-value {
+            flex: 1;
+            min-width: 200px;
+        }
+        .spouse-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .spouse-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .spouse-item:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        .spouse-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+        .spouse-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .spouse-name {
+            font-weight: bold;
+        }
+        .family-photo-btn {
+            background: linear-gradient(145deg, #9C27B0, #7B1FA2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .family-photo-btn:hover {
+            background: linear-gradient(145deg, #7B1FA2, #9C27B0);
+            transform: translateY(-2px);
+        }
+        .family-photo-container {
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+        .family-photo {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            border: 3px solid #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        /* Zoom Controls */
+        .zoom-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 50;
+        }
+        .zoom-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .zoom-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+            background: linear-gradient(145deg, #45a049, #4CAF50);
+        }
+        .zoom-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            padding: 8px 20px;
+            background: linear-gradient(145deg, #f44336, #d32f2f);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        .logout-btn:hover {
+            background: linear-gradient(145deg, #d32f2f, #f44336);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+        .logout-btn:active {
+            transform: translateY(0);
+        }
+        .logout-icon {
+            font-size: 18px;
+        }
+
+        /* Reset Zoom Button */
+        .reset-zoom-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .reset-zoom-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+            background: linear-gradient(145deg, #1976D2, #2196F3);
+        }
+
+        @media all and (max-width: 875px) {
+            .member-photo img {
+                width: 60px;
+                height: 60px;
+            }
+            .member-box {
+                min-width: 120px;
+            }
+            .member-box.male {
+                margin-right: 10px;
+            }
+            .member-box.female {
+                margin-left: 10px;
+            }
+            .main-member-icon {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
+            }
+        }
+        @media all and (max-width: 575px) {
+            .member-photo img {
+                display: none;
+            }
+            .member-box {
+                min-width: 100px;
+                padding: 8px;
+            }
+            .modal-body {
+                flex-direction: column;
+            }
+            .modal-image {
+                margin-bottom: 15px;
+            }
+            .zoom-controls {
+                bottom: 15px;
+                right: 15px;
+            }
+            .zoom-btn, .reset-zoom-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+            .modal-content {
+                width: 95%;
+                padding: 15px;
+            }
+        }
+        @media all and (max-width: 500px) { 
+            .tree li {
+                display: block;
+                text-align: left;
+                margin: 10px 0;
+            }
+            .member-box {
+                border: initial;
+                width: initial;
+                min-width: initial;
+            }
+            .tree ul::before, .tree li::before, .tree li::after {
+                content: none;
+            }
+            .member-couple {
+                flex-direction: column;
+            }
+            .member-box.male, .member-box.female {
+                margin: 5px 0;
+            }
+            .tree ul {
+                display: block;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="header-container">
-        <h1>Varunny_Family Tree</h1>
-        <a href="{% url 'logout' %}" class="logout-btn" style="text-decoration: none;">
-        <i class="fas fa-sign-out-alt logout-icon"></i>
-        Logout
-    </a>
-    </div>
+        <div class="header-container">
+            <h1>Varunny Family Tree</h1>
+            <a href="{% url 'logout' %}" class="logout-btn" style="text-decoration: none;">
+                <i class="fas fa-sign-out-alt logout-icon"></i>
+                Logout
+            </a>
+        </div>
+
 
     <div class="tree-wrapper">
         <div class="tree-container" id="treeContainer">
@@ -887,4 +888,5 @@
         });
     </script>
 </body>
-</html>
+</html> 
+
