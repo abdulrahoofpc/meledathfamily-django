@@ -53,7 +53,7 @@ body{
 .pbmit-heading-subheading .pbmit-title{
 	font-family: var(--pbmit-heading-typography-font-family);
 	font-weight: 500;
-    font-size: 52px;
+    font-size: 42px;
     line-height: 62px;
     letter-spacing: 0px;
     text-transform: none;
@@ -3802,4 +3802,5 @@ body{
 .pbmit-donation-form abbr[title],
 form.pbmit-donation-form button{
 	border: none;
+
 }
